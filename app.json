@@ -1,0 +1,12 @@
+{
+  "name": "misbook",
+  "description": "",
+  "env": {},
+  "formation": {},
+  "addons": [],
+  "buildpacks": [
+    {
+      "url": "heroku/nodejs"
+    }
+  ]
+}
