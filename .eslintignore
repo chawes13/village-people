@@ -5,3 +5,4 @@ node_modules/*
 public/*
 scripts/*
 server.js
+server/*

@@ -17,6 +17,7 @@ yarn-error.log*
 # Env vars
 .env*
 /config/application.yml
+/config/credentials.json
 
 # Dot index files
 .index.js
