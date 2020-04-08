@@ -20,7 +20,7 @@ module.exports = {
   devtool: 'eval-source-map',
   entry: [
     // Include polyfills
-    '@babel/polyfill', 
+    '@babel/polyfill',
     // Include compilation error overlay
     'react-dev-utils/webpackHotDevClient',
     paths.jsFolder,
@@ -31,7 +31,7 @@ module.exports = {
   resolve: {
     alias: aliases(paths.sourceFolder),
     // Resolve .index files correctly
-    mainFiles: ['index', '.index'], 
+    mainFiles: ['index', '.index'],
   },
   module: {
     rules: [
@@ -47,7 +47,7 @@ module.exports = {
         include: paths.sourceFolder,
         use: [
           {
-            loader: 'url-loader', 
+            loader: 'url-loader',
             options: {
               limit: 10000,
               name: 'static/media/[name].[hash:8].[ext]'
@@ -139,15 +139,15 @@ module.exports = {
     before: app => app.get('/env', exposeEnvMiddleware(loadPublicEnv)),
     // Create API proxy in case we need it.
     proxy: {
-      '/proxy': {
-        target: process.env.PROXIED_API_URL || '/',
+      '/api': {
+        target: process.env.PROXIED_API_URL || 'http://localhost:8000',
         headers: { Authorization: `Bearer ${ process.env.PROXIED_API_TOKEN || '' }` },
         logLevel: 'debug',
         secure: false,
-        changeOrigin: true,
-        pathRewrite: {
-          '^/proxy/': '/'
-        }
+        changeOrigin: false,
+        // pathRewrite: {
+        //   '^/proxy/': '/'
+        // }
       }
     },
     compress: true,
