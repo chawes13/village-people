@@ -13,7 +13,7 @@ function before() {
 // Any transformations of successful responses can go here.
 // By default, we pull out the value nested at `data.attributes`.
 function onSuccess(res) {
-  return get(res, 'data.attributes')
+  return get(res, 'data')
 }
 
 // Any transformations of failed responses can go here.

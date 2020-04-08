@@ -17,7 +17,7 @@ router.get('/spreadsheet', async (req, res) => {
   }
 
   const { data: { values } } = await sheets.spreadsheets.values.get(request)
-  return res.json(values)
+  return res.json({ data: values })
 })
 
 router.get('/contacts', async (req, res) => {
@@ -36,7 +36,7 @@ router.get('/contacts', async (req, res) => {
       return acc
     }, {})
   })
-  return res.json(contacts)
+  return res.json({ data: contacts })
 })
 
 // 404 handler
