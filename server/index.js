@@ -56,6 +56,12 @@ if (PROXIED_API_URL) app.use('/proxy', createProxyMiddleware({
   }
 }))
 
+// Error handling
+app.use((error, req, res, next) => {
+  console.error(error)
+  res.status(error.status || 500).send(error.message || 'Internal server error')
+})
+
 // Start server
 const server = app.listen(PORT, () => console.log(`Express server listening on port ${ PORT }`))
 
