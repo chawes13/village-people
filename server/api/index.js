@@ -1,5 +1,7 @@
 const { google } = require('googleapis')
 const router = require('express').Router()
+const { SPREADSHEET_ID, SHEET_NAME } = process.env
+const { camelCase } = require('lodash')
 
 const sheets = google.sheets({
   version: 'v4',
@@ -10,12 +12,31 @@ const sheets = google.sheets({
 
 router.get('/spreadsheet', async (req, res) => {
   const request = {
-    spreadsheetId: '13MBKuS-G7wtngps37X6_pr6f8-2a0aQclFOJKI9OjO4',
-    range: 'Sheet1!A:C',
+    spreadsheetId: SPREADSHEET_ID,
+    range: `${SHEET_NAME}!A:C`,
   }
 
   const { data: { values } } = await sheets.spreadsheets.values.get(request)
   return res.json(values)
+})
+
+router.get('/contacts', async (req, res) => {
+  const request = {
+    spreadsheetId: SPREADSHEET_ID,
+    range: `${SHEET_NAME}!A:C`
+  }
+
+  const { data: { values }} = await sheets.spreadsheets.values.get(request)
+  const [headers, ...contactRows] = values
+  const transformedHeaders = headers.map(camelCase)
+
+  const contacts = contactRows.map((contactRow) => {
+    return transformedHeaders.reduce((acc, header, idx) => {
+      acc[header] = contactRow[idx]
+      return acc
+    }, {})
+  })
+  return res.json(contacts)
 })
 
 // 404 handler
