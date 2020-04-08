@@ -9,7 +9,7 @@ const { loadEnv, loadPublicEnv } = require('../config/env')
 loadEnv()
 
 const {
-  PORT=8080,
+  PORT=8000,
   NODE_ENV='development',
   PROXIED_API_URL='',
   PROXIED_API_TOKEN='',
@@ -37,13 +37,13 @@ app.use((req, res, next) => {
 app.use('/api', require('./api'))
 
 // Use build folder for static files
-app.use(express.static('build'))
+app.use(express.static('../build'))
 
 // Expose env variables to JS code
 app.get('/env', exposeEnvMiddleware(loadPublicEnv))
 
 // Send main index file for every request
-// app.get('*', (req, res) => res.sendFile(path.join(__dirname, '/build/index.html')))
+app.get('*', (req, res) => res.sendFile(path.join(__dirname, '../build/index.html')))
 
 // Proxy requests if proxy API url is provided
 if (PROXIED_API_URL) app.use('/proxy', createProxyMiddleware({
