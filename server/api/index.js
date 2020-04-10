@@ -1,6 +1,10 @@
 const { google } = require('googleapis')
 const router = require('express').Router()
-const { SPREADSHEET_ID, SHEET_NAME } = process.env
+const {
+  SPREADSHEET_ID,
+  SHEET_NAME,
+  RANGE = 'A:Z'
+} = process.env
 const { camelCase } = require('lodash')
 
 const sheets = google.sheets({
@@ -13,7 +17,7 @@ const sheets = google.sheets({
 router.get('/spreadsheet', async (req, res) => {
   const request = {
     spreadsheetId: SPREADSHEET_ID,
-    range: `${SHEET_NAME}!A:C`,
+    range: `${SHEET_NAME}!${RANGE}`,
   }
 
   const { data: { values } } = await sheets.spreadsheets.values.get(request)
@@ -23,7 +27,7 @@ router.get('/spreadsheet', async (req, res) => {
 router.get('/contacts', async (req, res) => {
   const request = {
     spreadsheetId: SPREADSHEET_ID,
-    range: `${SHEET_NAME}!A:C`
+    range: `${SHEET_NAME}!${RANGE}`
   }
 
   const { data: { values }} = await sheets.spreadsheets.values.get(request)
