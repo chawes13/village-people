@@ -8,7 +8,11 @@ const propTypes = {}
 const defaultProps = {}
 
 function Header() {
-  return <header>Client Template Header</header>
+  return (
+    <header>
+      <h1>The Village People</h1>
+    </header>
+  )
 }
 
 Header.propTypes = exact(propTypes)

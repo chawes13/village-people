@@ -7,8 +7,10 @@ const propTypes = {}
 
 const defaultProps = {}
 
+const CURRENT_YEAR = new Date().getFullYear()
+
 function Footer() {
-  return <footer>Client Template Footer</footer>
+  return <footer>© {CURRENT_YEAR} Misericordia. All Rights Reserved.</footer>
 }
 
 Footer.propTypes = exact(propTypes)
