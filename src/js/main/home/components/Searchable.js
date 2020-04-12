@@ -1,17 +1,16 @@
-import React, { useState, useCallback, useEffect } from 'react'
-import { debounce, isNil } from 'lodash'
+import React, { useState, useCallback } from 'react'
+import { debounce } from 'lodash'
 import PropTypes from 'prop-types'
 import { LoadingContainer } from '@launchpadlab/lp-components'
 import { useUID } from 'react-uid'
 
 const propTypes = {
-  children: PropTypes.func.isRequired,
+  children: PropTypes.node.isRequired,
   className: PropTypes.string,
   delay: PropTypes.number, // ms
   label: PropTypes.string.isRequired,
   onSearch: PropTypes.func.isRequired,
   placeholder: PropTypes.string,
-  searchableItems: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
   showLabel: PropTypes.bool,
 }
 
@@ -34,30 +33,17 @@ function Searchable({
   onSearch,
   placeholder,
   showLabel,
-  searchableItems,
 }) {
   const [status, setStatus] = useState(Statuses.SUCCESS)
   const [searchQuery, setSearchQuery] = useState(null)
-  const [results, setResults] = useState(null)
   const id = 'searchable-' + useUID()
-
-  const updateResults = useCallback((results) => {
-    setResults(results)
-    setStatus(Statuses.SUCCESS)
-  }, [])
 
   const debouncedSearch = useCallback(
     debounce((query) => {
-      const results = query ? onSearch(searchableItems, query) : searchableItems
-      updateResults(results)
+      Promise.resolve(onSearch(query)).then(() => setStatus(Statuses.SUCCESS))
     }, delay),
     [onSearch]
   )
-
-  useEffect(() => {
-    if (isNil(searchQuery)) return updateResults(searchableItems) // only onMount
-    debouncedSearch(searchQuery)
-  }, [searchQuery])
 
   return (
     <div>
@@ -70,8 +56,9 @@ function Searchable({
           role="search"
           value={searchQuery || ''}
           onChange={(e) => {
-            setStatus(Statuses.SEARCHING)
             setSearchQuery(e.target.value)
+            setStatus(Statuses.SEARCHING)
+            debouncedSearch(e.target.value)
           }}
           autoComplete="off"
           placeholder={placeholder}
@@ -80,7 +67,7 @@ function Searchable({
         />
       </div>
       <LoadingContainer isLoading={status === Statuses.SEARCHING}>
-        {children(results, searchQuery)}
+        {children}
       </LoadingContainer>
     </div>
   )
