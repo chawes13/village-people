@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useCallback } from 'react'
 // import { api } from 'api'
 import { Spinner } from '@launchpadlab/lp-components'
-import { Searchable } from '../components'
+import { Expandable, Searchable } from '../components'
 import {
   isEmpty,
   includes,
@@ -91,13 +91,26 @@ function Home() {
           return (
             <>
               {map(groups, (contacts, group) => (
-                <div>
+                <div key={group}>
                   <h3>{group}</h3>
                   {contacts.map((contact) => (
                     <ul key={contact.phoneNumber}>
                       <li>
-                        {`${contact.firstName} ${contact.lastName}: `}{' '}
-                        <a href={'sms:' + contact.phoneNumber}>Text</a>
+                        <Expandable
+                          headerTitle={`${contact.firstName} ${contact.lastName}`}
+                        >
+                          <div
+                            style={{
+                              display: 'flex',
+                              justifyContent: 'space-between',
+                            }}
+                          >
+                            <a href={'tel:' + contact.phoneNumber}>
+                              <div>{contact.phoneNumber}</div>
+                            </a>
+                            <a href={'sms:' + contact.phoneNumber}>Text</a>
+                          </div>
+                        </Expandable>
                       </li>
                     </ul>
                   ))}
