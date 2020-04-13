@@ -10,6 +10,10 @@ const { camelCase } = require('lodash')
 const sheets = google.sheets({
   version: 'v4',
   auth: new google.auth.GoogleAuth({
+    credentials: {
+      private_key: process.env.GCLOUD_PRIVATE_KEY.replace(/\\n/g, '\n'),
+      client_email: process.env.GCLOUD_CLIENT_EMAIL,
+    },
     scopes: ['https://www.googleapis.com/auth/spreadsheets']
   }),
 })
