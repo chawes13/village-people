@@ -13,11 +13,6 @@ import {
   startCase,
 } from 'lodash'
 import { filterObjectValues, groupContactsByName, groupContactsBy } from 'utils'
-// import PropTypes from 'prop-types'
-// import * as Types from 'types'
-// import { selectors } from '../reducer'
-// import * as actions from '../actions'
-// import * as apiActions from 'api-actions'
 
 const propTypes = {}
 
@@ -34,30 +29,39 @@ const SortOptions = {
   HOUSE: 'house',
 }
 
+const ShiftFilterOptions = {
+  AM: 'AM',
+  PM: 'PM',
+}
+
 const CONTACTS = [
   {
     firstName: 'Conor',
     lastName: 'Smith',
     phoneNumber: '5551231234',
     house: 'T1',
+    shift: 'AM',
   },
   {
     firstName: 'Sara',
     lastName: 'Doe',
     phoneNumber: '5551231235',
     house: 'T1',
+    shift: 'PM',
   },
   {
     firstName: 'Andrew',
     lastName: 'Matters',
     phoneNumber: '5551231236',
     house: 'T2',
+    shift: 'PM',
   },
   {
     firstName: 'Matt',
     lastName: 'Ruffalo',
     phoneNumber: '5551231237',
     house: 'T3',
+    shift: 'AM',
   },
 ]
 
@@ -79,6 +83,7 @@ function Home() {
   const [allContacts, setAllContacts] = useState(null)
   const [contactGroups, setContactGroups] = useState(null)
   const [sortCriteria, setSortCriteria] = useState(SortOptions.NAME)
+  const [filterCriteria, setFilterCriteria] = useState('')
 
   // On mount
   useEffect(() => {
@@ -127,51 +132,74 @@ function Home() {
     [contactGroups, sortCriteria]
   )
 
+  const handleFilter = useCallback(
+    (e) => {
+      const filterOption = e.target.value
+      setFilterCriteria(filterOption)
+
+      if (!filterOption)
+        return setContactGroups(sortContacts(allContacts, sortCriteria))
+
+      const filteredContacts = allContacts.filter(
+        (contact) => contact.shift === filterOption
+      )
+
+      setContactGroups(sortContacts(filteredContacts, sortCriteria))
+    },
+    [contactGroups, sortCriteria]
+  )
+
   if (state === States.LOADING) return <Spinner />
   if (state === States.FAILURE) return <div>Oops! Something went wrong</div>
 
   return (
     <div>
       <Searchable onSearch={handleSearch} label={'Search Contacts'}>
-        {isEmpty(contactGroups) ? (
-          <EmptyState message="No contacts found" />
-        ) : (
-          <>
-            <select value={sortCriteria} onChange={handleSort}>
-              {map(SortOptions, (value) => (
-                <option key={value} value={value}>
-                  {startCase(value)}
-                </option>
-              ))}
-            </select>
-            {map(contactGroups, (contacts, group) => (
-              <div key={group}>
-                <h3>{group}</h3>
-                {contacts.map((contact) => (
-                  <ul key={contact.phoneNumber}>
-                    <li>
-                      <Expandable
-                        headerTitle={`${contact.firstName} ${contact.lastName}`}
-                      >
-                        <div
-                          style={{
-                            display: 'flex',
-                            justifyContent: 'space-between',
-                          }}
-                        >
-                          <a href={'tel:' + contact.phoneNumber}>
-                            <div>{contact.phoneNumber}</div>
-                          </a>
-                          <a href={'sms:' + contact.phoneNumber}>Text</a>
-                        </div>
-                      </Expandable>
-                    </li>
-                  </ul>
-                ))}
-              </div>
+        <>
+          <select value={filterCriteria} onChange={handleFilter}>
+            <option value="">Select</option>
+            {map(ShiftFilterOptions, (value) => (
+              <option key={value} value={value}>
+                {value}
+              </option>
             ))}
-          </>
-        )}
+          </select>
+
+          <select value={sortCriteria} onChange={handleSort}>
+            {map(SortOptions, (value) => (
+              <option key={value} value={value}>
+                {startCase(value)}
+              </option>
+            ))}
+          </select>
+          {isEmpty(contactGroups) && <EmptyState message="No contacts found" />}
+          {map(contactGroups, (contacts, group) => (
+            <div key={group}>
+              <h3>{group}</h3>
+              {contacts.map((contact) => (
+                <ul key={contact.phoneNumber}>
+                  <li>
+                    <Expandable
+                      headerTitle={`${contact.firstName} ${contact.lastName}`}
+                    >
+                      <div
+                        style={{
+                          display: 'flex',
+                          justifyContent: 'space-between',
+                        }}
+                      >
+                        <a href={'tel:' + contact.phoneNumber}>
+                          <div>{contact.phoneNumber}</div>
+                        </a>
+                        <a href={'sms:' + contact.phoneNumber}>Text</a>
+                      </div>
+                    </Expandable>
+                  </li>
+                </ul>
+              ))}
+            </div>
+          ))}
+        </>
       </Searchable>
     </div>
   )
