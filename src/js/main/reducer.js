@@ -1,5 +1,8 @@
 import { combineReducers } from 'redux'
-import { reducer as homeReducer, reducerKey as homeReducerKey } from './home'
+import {
+  reducer as contactsReducer,
+  reducerKey as contactsReducerKey,
+} from './contacts'
 import {
   reducer as styleguideReducer,
   reducerKey as styleguideReducerKey,
@@ -8,7 +11,7 @@ import {
 const reducerKey = 'root'
 
 const reducer = combineReducers({
-  [homeReducerKey]: homeReducer,
+  [contactsReducerKey]: contactsReducer,
   [styleguideReducerKey]: styleguideReducer,
 })
 

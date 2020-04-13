@@ -78,7 +78,7 @@ function sortContacts(contacts, option) {
   return groupContactsBy(contacts, SortOptions[toUpper(option)])
 }
 
-function Home() {
+function Contacts() {
   const [state, setState] = useState(States.LOADING)
   const [allContacts, setAllContacts] = useState(null)
   const [contactGroups, setContactGroups] = useState(null)
@@ -205,7 +205,7 @@ function Home() {
   )
 }
 
-Home.propTypes = propTypes
-Home.defaultProps = defaultProps
+Contacts.propTypes = propTypes
+Contacts.defaultProps = defaultProps
 
-export default Home
+export default Contacts

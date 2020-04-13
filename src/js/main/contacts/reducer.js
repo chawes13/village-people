@@ -4,8 +4,8 @@ import { handleActions } from 'redux-actions'
 // import * as actions from './actions'
 // import * as apiActions from 'api-actions'
 
-const reducerKey = 'home'
-// const slice = 'root.home'
+const reducerKey = 'contacts'
+// const slice = 'root.contacts'
 
 const initialState = {}
 
