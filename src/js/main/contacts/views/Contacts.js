@@ -13,6 +13,7 @@ import {
   startCase,
 } from 'lodash'
 import { filterObjectValues, groupContactsByName, groupContactsBy } from 'utils'
+import CONTACTS_RESPONSE from '../../../../../fixtures/contacts.json'
 
 const propTypes = {}
 
@@ -34,37 +35,6 @@ const ShiftFilterOptions = {
   PM: 'PM',
 }
 
-const CONTACTS = [
-  {
-    firstName: 'Conor',
-    lastName: 'Smith',
-    phoneNumber: '5551231234',
-    house: 'T1',
-    shift: 'AM',
-  },
-  {
-    firstName: 'Sara',
-    lastName: 'Doe',
-    phoneNumber: '5551231235',
-    house: 'T1',
-    shift: 'PM',
-  },
-  {
-    firstName: 'Andrew',
-    lastName: 'Matters',
-    phoneNumber: '5551231236',
-    house: 'T2',
-    shift: 'PM',
-  },
-  {
-    firstName: 'Matt',
-    lastName: 'Ruffalo',
-    phoneNumber: '5551231237',
-    house: 'T3',
-    shift: 'AM',
-  },
-]
-
 function EmptyState({ message }) {
   return (
     <div className="empty-search">
@@ -78,6 +48,11 @@ function sortContacts(contacts, option) {
   return groupContactsBy(contacts, SortOptions[toUpper(option)])
 }
 
+function fetchContacts() {
+  // return api.get('/contacts')
+  return Promise.resolve(JSON.parse(JSON.stringify(CONTACTS_RESPONSE)).data)
+}
+
 function Contacts() {
   const [state, setState] = useState(States.LOADING)
   const [allContacts, setAllContacts] = useState(null)
@@ -87,19 +62,16 @@ function Contacts() {
 
   // On mount
   useEffect(() => {
-    // api.get('/api/contacts')
-    //   .then((res) => {
-    //     setContacts(res)
-    //     setState(States.SUCCESS)
-    //   })
-    //   .catch(() => setState(States.FAILURE))
+    fetchContacts()
+      .then((res) => {
+        const sortedContacts = sortBy(res, 'lastName')
+        setAllContacts(sortedContacts)
 
-    const sortedContacts = sortBy(CONTACTS, 'lastName')
-    setAllContacts(sortedContacts)
-
-    const groupedContacts = groupContactsByName(sortedContacts)
-    setContactGroups(groupedContacts)
-    setTimeout(() => setState(States.SUCCESS), 250)
+        const groupedContacts = groupContactsByName(sortedContacts)
+        setContactGroups(groupedContacts)
+        setState(States.SUCCESS)
+      })
+      .catch(() => setState(States.FAILURE))
   }, [])
 
   const handleSearch = useCallback(
@@ -173,9 +145,9 @@ function Contacts() {
             ))}
           </select>
           {isEmpty(contactGroups) && <EmptyState message="No contacts found" />}
-          {map(contactGroups, (contacts, group) => (
-            <div key={group}>
-              <h3>{group}</h3>
+          {map(contactGroups, (contacts, groupName) => (
+            <div key={groupName}>
+              <h3>{groupName}</h3>
               {contacts.map((contact) => (
                 <ul key={contact.phoneNumber}>
                   <li>
