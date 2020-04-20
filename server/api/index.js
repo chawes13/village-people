@@ -47,6 +47,26 @@ router.get('/contacts', async (req, res) => {
   return res.json({ data: contacts })
 })
 
+router.get('/filters', async (req, res) => {
+  const request = {
+    spreadsheetId: SPREADSHEET_ID,
+    range: `${process.env.FILTER_SHEET_NAME}!A:Z`,
+    majorDimension: 'COLUMNS',
+  }
+
+  const { data: { values }} = await sheets.spreadsheets.values.get(request)
+
+  const filters = values.map((column) => {
+    const [name, ...options] = column
+    return {
+      name,
+      options,
+    }
+  })
+
+  return res.json({ data: filters })
+})
+
 // 404 handler
 router.use((req, res, next) => {
   const error = new Error('Endpoint Not Found')
