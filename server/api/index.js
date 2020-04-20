@@ -7,6 +7,11 @@ const {
 } = process.env
 const { camelCase } = require('lodash')
 
+const MajorDimension = {
+  ROWS: 'ROWS',
+  COLUMNS: 'COLUMNS',
+}
+
 const sheets = google.sheets({
   version: 'v4',
   auth: new google.auth.GoogleAuth({
@@ -47,16 +52,16 @@ router.get('/contacts', async (req, res) => {
   return res.json({ data: contacts })
 })
 
-router.get('/filters', async (req, res) => {
+router.get('/filter-options', async (req, res) => {
   const request = {
     spreadsheetId: SPREADSHEET_ID,
     range: `${process.env.FILTER_SHEET_NAME}!A:Z`,
-    majorDimension: 'COLUMNS',
+    majorDimension: MajorDimension.COLUMNS,
   }
 
   const { data: { values }} = await sheets.spreadsheets.values.get(request)
 
-  const filters = values.map((column) => {
+  const filterOptionGroups = values.map((column) => {
     const [name, ...options] = column
     return {
       name,
@@ -64,7 +69,27 @@ router.get('/filters', async (req, res) => {
     }
   })
 
-  return res.json({ data: filters })
+  return res.json({ data: filterOptionGroups })
+})
+
+router.get('/sort-options', async (req, res) => {
+  const request = {
+    spreadsheetId: SPREADSHEET_ID,
+    range: `${process.env.SORT_SHEET_NAME}!A:Z`,
+    majorDimension: MajorDimension.COLUMNS,
+  }
+
+  const { data: { values } } = await sheets.spreadsheets.values.get(request)
+
+  const sortOptionGroups = values.map((column) => {
+    const [name, ...options] = column
+    return {
+      name,
+      options,
+    }
+  })
+
+  return res.json({ data: sortOptionGroups })
 })
 
 // 404 handler
