@@ -1,10 +1,9 @@
-import React, { useCallback, useReducer, useMemo } from 'react'
+import React, { useCallback, useReducer, useEffect } from 'react'
 import PropTypes from 'prop-types'
 import * as Types from 'types'
-import { debounce, map, sortBy, startCase } from 'lodash'
+import { debounce, map, startCase } from 'lodash'
 import { LoadingContainer } from '@launchpadlab/lp-components'
 import { useUID } from 'react-uid'
-import { groupContacts } from 'utils'
 import reducer from './reducer'
 
 const propTypes = {
@@ -35,21 +34,20 @@ function FacetedSearch({
   showLabel,
 }) {
   const id = 'searchable-' + useUID()
-  const groupedInitialResults = useMemo(() => {
-    return groupContacts(
-      sortBy(initialResults, 'lastName'),
-      Types.CustomSortOptions.NAME
-    )
-  }, [initialResults])
 
   const [state, dispatch] = useReducer(reducer, {
-    searchableContactGroups: groupedInitialResults,
-    resultGroups: groupedInitialResults,
+    searchableContactGroups: null,
+    resultGroups: null,
     sortOption: Types.CustomSortOptions.NAME,
     filterOption: '',
-    searchQuery: null,
+    searchQuery: '',
     status: Types.SearchStates.INACTIVE,
   })
+
+  // Reset searchable items if results change (likely to happen with SWR caching strategy)
+  useEffect(() => {
+    dispatch({ type: 'initialize-searchable', payload: initialResults })
+  }, [initialResults])
 
   const debouncedSearch = useCallback(
     debounce((query) => {
@@ -92,7 +90,7 @@ function FacetedSearch({
         value={state.sortOption}
         onChange={(e) => dispatch({ type: 'sort', payload: e.target.value })}
       >
-        {map(['name', 'house'], (value) => (
+        {map(Types.CustomSortOptions, (value) => (
           <option key={value} value={value}>
             {startCase(value)}
           </option>

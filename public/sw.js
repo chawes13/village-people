@@ -1,5 +1,12 @@
 const CACHE_NAME = 'village-people-static-cache-v1'
-const STATIC_FILES_TO_CACHE = ['/index.html', '/offline.html', '/favicon.png', 'lpl-192.png', '/astronaut.svg']
+const STATIC_FILES_TO_CACHE = [
+  'index.html',
+  'env',
+  'main.js',
+  'manifest.json',
+  'favicon.png',
+  'lpl-192.png',
+]
 const DATA_CACHE_NAME = 'village-people-data-cache-v1'
 
 self.addEventListener('install', (event) => {
@@ -40,16 +47,17 @@ self.addEventListener('fetch', (event) => {
     )
   } else {
     event.respondWith(
-      caches.match(event.request, { ignoreSearch: true })
-        .then((response) => {
-          return response || fetch(event.request).catch(() => {
-            return caches.open(CACHE_NAME)
-              .then((cache) => {
-                return cache.match('offline.html')
+      caches.open(CACHE_NAME)
+        .then((cache) => {
+          // Return cached file or attempt to fetch it over the network
+          // "Pages" that are not cached should return the index (since it's a SPA)
+          return cache.match(event.request)
+            .then((response) => {
+              return response || fetch(event.request).catch(() => {
+                return cache.match('index.html')
               })
-          })
-        }
-      )
+            })
+        })
     )
   }
 })

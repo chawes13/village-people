@@ -54,6 +54,18 @@ function reducer(state, action) {
         }),
       }
     }
+    case 'initialize-searchable': {
+      const grouped = groupContacts(action.payload, state.sortOption)
+      return {
+        ...state,
+        searchableContactGroups: grouped,
+        resultGroups: performFacetedSearch({
+          contactGroups: grouped,
+          query: state.searchQuery,
+          filter: state.filterOption,
+        }),
+      }
+    }
     default:
       throw new Error(`Missing ${action.type} in FacetedSearch reducer`)
   }
