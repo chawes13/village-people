@@ -1,0 +1,23 @@
+/*-----------------------
+Offline Overlay
+-----------------------*/
+
+.offline-overlay {
+  position: fixed;
+  bottom: 0.5rem;
+  display: flex;
+  justify-content: center;
+  text-align: center;
+  z-index: 5;
+  width: 100%;
+
+  p {
+    border-radius: 0.3em;
+    @include rem(padding, 2px 20px);
+    background-color: rgba(0, 0, 0, 0.5);
+    margin: 0 auto;
+    font-weight: $semibold;
+    font-size: $s-small;
+    color: $white-base;
+  }
+}

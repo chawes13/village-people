@@ -5,7 +5,7 @@ import { connect } from 'react-redux'
 import * as routerSelectors from 'connected-react-router'
 import { getFlashMessages, flashMessageType } from 'redux-flash'
 import { FlashMessageContainer } from '@launchpadlab/lp-components'
-import { Header, Footer, SkipNavLink } from 'components'
+import { Header, Footer, SkipNavLink, OfflineOverlay } from 'components'
 import { scrollToTop } from 'utils'
 
 const propTypes = {
@@ -28,6 +28,7 @@ function Layout({ flashMessages, children, pathname }) {
       <Header />
       <main id="main-content">{children}</main>
       <Footer />
+      <OfflineOverlay />
     </div>
   )
 }
