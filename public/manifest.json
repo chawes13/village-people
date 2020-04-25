@@ -1,0 +1,23 @@
+{
+  "name": "village-people",
+  "short_name": "Village People",
+  "theme_color": "#000000",
+  "background_color": "#FFFFFF",
+  "display": "standalone",
+  "scope": "/",
+  "start_url": "/",
+  "description": "Progressive Web App for the Village People shared address book",
+  "orientation": "any",
+  "icons": [
+    {
+      "src": "lpl-192.png",
+      "type": "image/png",
+      "sizes": "192x192"
+    },
+    {
+      "src": "lpl-512.png",
+      "type": "image/png",
+      "sizes": "512x512"
+    }
+  ]
+}
