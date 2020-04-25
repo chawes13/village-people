@@ -1,5 +1,5 @@
-import { configureApi, http } from 'lp-requests'
-import { middleware as configureMiddleware } from 'lp-redux-api'
+import { configureApi, http } from '@launchpadlab/lp-requests'
+import { middleware as configureMiddleware } from '@launchpadlab/lp-redux-api'
 import { get } from 'lodash'
 
 // Configure lp-redux-api middleware

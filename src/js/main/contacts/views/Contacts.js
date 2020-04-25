@@ -1,11 +1,9 @@
 import React, { useEffect, useState } from 'react'
+import * as Types from 'types'
 // import { api } from 'api'
 import { Spinner } from '@launchpadlab/lp-components'
-import { ContactCard, FacetedSearch } from '../components'
-import {
-  isEmpty,
-  map,
-} from 'lodash'
+import { ContactCard, EmptyState, FacetedSearch } from '../components'
+import { isEmpty, map } from 'lodash'
 import CONTACTS_RESPONSE from '../../../../../fixtures/contacts.json'
 import FILTER_OPTIONS_RESPONSE from '../../../../../fixtures/filter-options.json'
 import SORT_OPTIONS_RESPONSE from '../../../../../fixtures/sort-options.json'
@@ -13,20 +11,6 @@ import SORT_OPTIONS_RESPONSE from '../../../../../fixtures/sort-options.json'
 const propTypes = {}
 
 const defaultProps = {}
-
-const States = {
-  LOADING: 'loading',
-  FAILURE: 'failure',
-  SUCCESS: 'success',
-}
-
-function EmptyState({ message }) {
-  return (
-    <div className="empty-search">
-      <p>{message}</p>
-    </div>
-  )
-}
 
 function fetchContacts() {
   // return api.get('/contacts')
@@ -44,7 +28,7 @@ function fetchSortOptions() {
 }
 
 function Contacts() {
-  const [state, setState] = useState(States.LOADING)
+  const [state, setState] = useState(Types.LoadingStates.LOADING)
   const [contacts, setContacts] = useState(null)
   const [filterOptions, setFilterOptions] = useState(null)
   const [sortOptions, setSortOptions] = useState(null)
@@ -56,13 +40,14 @@ function Contacts() {
         setContacts(contacts)
         setFilterOptions(filterOptions)
         setSortOptions(sortOptions)
-        setState(States.SUCCESS)
+        setState(Types.LoadingStates.SUCCESS)
       })
-      .catch(() => setState(States.FAILURE))
+      .catch(() => setState(Types.LoadingStates.FAILURE))
   }, [])
 
-  if (state === States.LOADING) return <Spinner />
-  if (state === States.FAILURE) return <div>Oops! Something went wrong</div>
+  if (state === Types.LoadingStates.LOADING) return <Spinner />
+  if (state === Types.LoadingStates.FAILURE)
+    return <EmptyState className="error" message="Oops! Something went wrong" />
 
   return (
     <div>
@@ -73,18 +58,20 @@ function Contacts() {
         sortOptions={sortOptions}
       >
         {(resultGroups) => {
-          if (isEmpty(resultGroups)) return <EmptyState message="No contacts found" />
+          if (isEmpty(resultGroups))
+            return <EmptyState message="No contacts found" />
           return (
             <>
               {map(resultGroups, (results, groupName) => (
                 <div key={groupName}>
                   <h3>{groupName}</h3>
                   <ul>
-                    {results.map((result) => (
-                      <li key={result.phoneNumber}>
+                    {results.map((contact) => (
+                      <li key={contact.phoneNumber}>
                         <ContactCard
-                          name={`${result.firstName} ${result.lastName}`}
-                          phoneNumber={result.phoneNumber}
+                          name={`${contact.firstName} ${contact.lastName}`}
+                          phoneNumber={contact.phoneNumber}
+                          details={`${contact.house} - ${contact.shift}`}
                         />
                       </li>
                     ))}

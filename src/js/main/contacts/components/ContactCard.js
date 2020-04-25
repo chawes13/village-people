@@ -5,26 +5,25 @@ import { pure } from 'recompose'
 import Expandable from './Expandable'
 
 const propTypes = {
+  details: PropTypes.string,
   name: PropTypes.string.isRequired,
   phoneNumber: PropTypes.string.isRequired,
 }
 
-const defaultProps = {}
+const defaultProps = {
+  details: '',
+}
 
-function ContactCard ({ name, phoneNumber }) {
+function ContactCard({ details, name, phoneNumber }) {
   return (
     <Expandable headerTitle={name}>
-      <div
-        style={{
-          display: 'flex',
-          justifyContent: 'space-between',
-        }}
-      >
+      <div className="contact actions">
         <a href={'tel:' + phoneNumber}>
           <div>{phoneNumber}</div>
         </a>
         <a href={'sms:' + phoneNumber}>Text</a>
       </div>
+      <div className="contact details">{details}</div>
     </Expandable>
   )
 }

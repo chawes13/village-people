@@ -1,8 +1,8 @@
-import { groupBy, isArray, flatMap } from 'lodash'
+import { isArray, groupBy, flatMap } from 'lodash'
 
-function groupContactsBy(collection, iteratee) {
-  const contacts = getContacts(collection)
-  return groupBy(contacts, iteratee)
+function groupContactsBy(collection, option) {
+  const contactsArray = getContacts(collection)
+  return groupBy(contactsArray, option)
 }
 
 // ----- PRIVATE -----

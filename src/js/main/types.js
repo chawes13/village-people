@@ -8,3 +8,18 @@
 //    id: PropTypes.string.isRequired,
 //    name: PropTypes.string.isRequired,
 // })
+
+export const LoadingStates = {
+  LOADING: 'loading',
+  FAILURE: 'failure',
+  SUCCESS: 'success',
+}
+
+export const SearchStates = {
+  ACTIVE: 'active',
+  INACTIVE: 'inactive',
+}
+
+export const CustomSortOptions = {
+  NAME: 'name',
+}
