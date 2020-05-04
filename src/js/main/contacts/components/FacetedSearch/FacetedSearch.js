@@ -1,7 +1,7 @@
 import React, { useCallback, useReducer, useEffect } from 'react'
 import PropTypes from 'prop-types'
 import * as Types from 'types'
-import { debounce, map, startCase } from 'lodash'
+import { get, debounce, map, startCase } from 'lodash'
 import { LoadingContainer } from '@launchpadlab/lp-components'
 import { useUID } from 'react-uid'
 import reducer from './reducer'
@@ -80,7 +80,7 @@ function FacetedSearch({
         onChange={(e) => dispatch({ type: 'filter', payload: e.target.value })}
       >
         <option value="">Select</option>
-        {map(filterOptions[0].options, (option) => (
+        {map(get(filterOptions, '[0].options'), (option) => (
           <option key={option} value={option}>
             {option}
           </option>

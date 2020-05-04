@@ -1,13 +1,15 @@
 import { configureApi, http } from '@launchpadlab/lp-requests'
 import { middleware as configureMiddleware } from '@launchpadlab/lp-redux-api'
 import { get } from 'lodash'
+import * as LS from 'local-storage'
 
 // Configure lp-redux-api middleware
 
 // This function will be passed the request options before every request.
 // You can use it to set additional options or override existing ones.
 function before() {
-  return {}
+  const bearerToken = LS.getToken()
+  if (bearerToken) return { bearerToken }
 }
 
 // Any transformations of successful responses can go here.

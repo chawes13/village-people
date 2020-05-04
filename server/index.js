@@ -34,7 +34,7 @@ app.use((req, res, next) => {
 })
 
 // API routes
-app.use('/api', require('./api'))
+app.use('/api', express.json(), require('./api'))
 
 // Use build folder for static files
 app.use(express.static('../build'))

@@ -9,6 +9,11 @@ const STATIC_FILES_TO_CACHE = [
 ]
 const DATA_CACHE_NAME = 'village-people-data-cache-v1'
 
+// Valid HTTP responses return codes with 2xx or 3xx
+function validResponse (response) {
+  return /^(2|3)\d{2}$/.test(response.status)
+}
+
 self.addEventListener('install', (event) => {
   event.waitUntil(
     caches.open(CACHE_NAME).then((cache) => {
@@ -36,7 +41,7 @@ self.addEventListener('fetch', (event) => {
       caches.open(DATA_CACHE_NAME).then((cache) => {
         return fetch(event.request)
           .then((response) => {
-            if (response.status === 200) cache.put(event.request.url, response.clone())
+            if (event.request.method === 'GET' && validResponse(response)) cache.put(event.request.url, response.clone())
             return response
           })
           .catch((err) => {
