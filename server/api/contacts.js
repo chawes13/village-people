@@ -5,7 +5,6 @@ const {
   SHEET_NAME,
   RANGE = 'A:Z',
   FILTER_SHEET_NAME,
-  SORT_SHEET_NAME
 } = process.env
 const { camelCase } = require('lodash')
 
@@ -66,26 +65,6 @@ router.get('/filter-options', async (req, res) => {
   })
 
   return res.json({ data: filterOptionGroups })
-})
-
-router.get('/sort-options', async (req, res) => {
-  const request = {
-    spreadsheetId: SPREADSHEET_ID,
-    range: `${SORT_SHEET_NAME}!A:Z`,
-    majorDimension: MajorDimension.COLUMNS,
-  }
-
-  const { data: { values } } = await sheets.spreadsheets.values.get(request)
-
-  const sortOptionGroups = values.map((column) => {
-    const [name, ...options] = column
-    return {
-      name,
-      options,
-    }
-  })
-
-  return res.json({ data: sortOptionGroups })
 })
 
 module.exports = router

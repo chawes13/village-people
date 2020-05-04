@@ -9,6 +9,11 @@ const STATIC_FILES_TO_CACHE = [
 ]
 const DATA_CACHE_NAME = 'village-people-data-cache-v1'
 
+// Only cache data returned via GET requests
+function cacheableRequest (request) {
+  return request.method === 'GET'
+}
+
 // Valid HTTP responses return codes with 2xx or 3xx
 function validResponse (response) {
   return /^(2|3)\d{2}$/.test(response.status)
@@ -41,7 +46,7 @@ self.addEventListener('fetch', (event) => {
       caches.open(DATA_CACHE_NAME).then((cache) => {
         return fetch(event.request)
           .then((response) => {
-            if (event.request.method === 'GET' && validResponse(response)) cache.put(event.request.url, response.clone())
+            if (cacheableRequest(event.request) && validResponse(response)) cache.put(event.request.url, response.clone())
             return response
           })
           .catch((err) => {
