@@ -37,7 +37,7 @@ app.use((req, res, next) => {
 app.use('/api', express.json(), require('./api'))
 
 // Use build folder for static files
-app.use(express.static('../build'))
+app.use(express.static(path.join(__dirname, '../build')))
 
 // Expose env variables to JS code
 app.get('/env', exposeEnvMiddleware(loadPublicEnv))

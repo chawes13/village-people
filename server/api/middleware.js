@@ -10,8 +10,6 @@ const isVerified = (req, res, next) => {
   const bearerToken = replace(req.headers.authorization, /^Bearer /, '')
   let verifiedToken = null
 
-  console.log(NODE_ENV)
-
   try {
     verifiedToken = verify(bearerToken)
   } catch (e) {
