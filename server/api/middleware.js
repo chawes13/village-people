@@ -3,7 +3,7 @@ const { NODE_ENV, APP_TOKEN } = process.env
 
 const replace = (str, pattern, replacement) => {
   if (!str) return ''
-  str.replace(pattern, replacement)
+  return str.replace(pattern, replacement)
 }
 
 const isVerified = (req, res, next) => {
@@ -19,7 +19,7 @@ const isVerified = (req, res, next) => {
   if (verifiedToken === APP_TOKEN || NODE_ENV === 'development') {
     next()
   } else {
-    return res.sendStatus(401)
+    return res.status(401).json({})
   }
 }
 
