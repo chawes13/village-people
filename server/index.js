@@ -3,6 +3,7 @@ const path = require('path')
 const enforceSSL = require('express-enforces-ssl')
 const { createProxyMiddleware } = require('http-proxy-middleware')
 const compression = require('compression')
+const cors = require('cors')
 const exposeEnvMiddleware = require('expose-env-middleware')
 const { loadEnv, loadPublicEnv } = require('../config/env')
 
@@ -24,6 +25,10 @@ if (NODE_ENV === 'production') {
   app.use(enforceSSL())
   // Enable gzip compression to decrease response body size to increase speed
   app.use(compression())
+}
+
+if (NODE_ENV === 'development') {
+  app.use('/api', cors())
 }
 
 // Reject blacklisted http methods

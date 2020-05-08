@@ -44,6 +44,7 @@
     "compression": "^1.7.3",
     "connected-react-router": "^6.8.0",
     "copy-webpack-plugin": "^5.0.3",
+    "cors": "^2.8.5",
     "css-loader": "^3.2.0",
     "dot-index-webpack-plugin": "^5.0.0",
     "expose-env-middleware": "^2.0.0",
