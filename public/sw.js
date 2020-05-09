@@ -1,8 +1,7 @@
-const CACHE_NAME = 'village-people-static-cache-v1'
-const STATIC_FILES_TO_CACHE = [
+const STATIC_CACHE_NAME = 'village-people-static-cache-v1'
+const STATIC_REQUESTS_TO_CACHE = [
   'index.html',
   'env',
-  'main.js',
   'manifest.json',
   'favicon.png',
   'lpl-192.png',
@@ -19,10 +18,14 @@ function validResponse (response) {
   return /^(2|3)\d{2}$/.test(response.status)
 }
 
+function staticAssetRequest (request) {
+  return request.url.includes('/static/')
+}
+
 self.addEventListener('install', (event) => {
   event.waitUntil(
-    caches.open(CACHE_NAME).then((cache) => {
-      return cache.addAll(STATIC_FILES_TO_CACHE)
+    caches.open(STATIC_CACHE_NAME).then((cache) => {
+      return cache.addAll(STATIC_REQUESTS_TO_CACHE)
     })
   )
 
@@ -32,7 +35,7 @@ self.addEventListener('install', (event) => {
 self.addEventListener('activate', (event) => {
   event.waitUntil(caches.keys().then((keyList) => {
     return Promise.all(keyList.map((key) => {
-      if (key === CACHE_NAME || key === DATA_CACHE_NAME) return
+      if (key === STATIC_CACHE_NAME || key === DATA_CACHE_NAME) return
       return caches.delete(key)
     }))
   }))
@@ -57,15 +60,21 @@ self.addEventListener('fetch', (event) => {
     )
   } else {
     event.respondWith(
-      caches.open(CACHE_NAME)
+      caches.open(STATIC_CACHE_NAME)
         .then((cache) => {
           // Return cached file or attempt to fetch it over the network
-          // "Pages" that are not cached should return the index (since it's a SPA)
+          // "Pages" that are not cached should return index.html (since it's a SPA)
           return cache.match(event.request)
             .then((response) => {
-              return response || fetch(event.request).catch(() => {
-                return cache.match('index.html')
-              })
+              return response || fetch(event.request)
+                .then((response) => {
+                  // cache dynamically generated _static_ files (e.g., main.1579e961.js)
+                  if (staticAssetRequest(event.request) && validResponse(response)) cache.put(event.request.url, response.clone())
+                  return response
+                })
+                .catch(() => {
+                  return cache.match('index.html')
+                })
             })
         })
     )
