@@ -25,7 +25,7 @@ function OfflineOverlay() {
   if (!showOverlay) return null
   return (
     <div className="offline-overlay">
-      <p>You are offline. The app will continue to work!</p>
+      <p>You are offline.</p>
     </div>
   )
 }
