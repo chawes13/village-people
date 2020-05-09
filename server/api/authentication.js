@@ -10,7 +10,7 @@ router.post('/accounts', (req, res) => {
     const signedToken = sign(APP_TOKEN)
     res.json({ data: { signedToken }})
   } else {
-    res.sendStatus(401)
+    res.status(401).json({ data: { message: 'Invalid token' }})
   }
 })
 
