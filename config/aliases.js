@@ -19,6 +19,7 @@ function aliases (basePath) {
     'browser-history': to('js/services/browserHistory'),
     'local-storage': to('js/services/localStorage'),
     'sentry': to('js/services/sentry'),
+    'service-worker': to('js/services/serviceWorker'),
     // Modules
     'lp-components': '@launchpadlab/lp-components',
     'lp-form': '@launchpadlab/lp-form',
