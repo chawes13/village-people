@@ -58,44 +58,54 @@ function FacetedSearch({
 
   return (
     <div>
-      <div className="search-bar">
-        {showLabel && <label htmlFor={id}>{label}</label>}
-        <input
-          id={id}
-          name="search"
-          type="text"
-          role="search"
-          onChange={(e) => {
-            dispatch({ type: 'search-input' })
-            debouncedSearch(e.target.value)
-          }}
-          autoComplete="off"
-          placeholder={placeholder}
-          aria-label={showLabel ? undefined : label}
-          className={className}
-        />
+      <div className="search-wrapper">
+        <div className="search-block-container">
+          <div className="search-bar">
+            {showLabel && <label htmlFor={id}>{label}</label>}
+            <input
+              id={id}
+              name="search"
+              type="search"
+              role="search"
+              onChange={(e) => {
+                dispatch({ type: 'search-input' })
+                debouncedSearch(e.target.value)
+              }}
+              autoComplete="off"
+              placeholder={placeholder}
+              aria-label={showLabel ? undefined : label}
+              className={className}
+            />
+          </div>
+          <div className="secondary-actions">
+            <select
+              value={state.filterOption}
+              onChange={(e) =>
+                dispatch({ type: 'filter', payload: e.target.value })
+              }
+            >
+              <option value="">Select</option>
+              {map(get(filterOptions, '[0].options'), (option) => (
+                <option key={option} value={option}>
+                  {option}
+                </option>
+              ))}
+            </select>
+            <select
+              value={state.sortOption}
+              onChange={(e) =>
+                dispatch({ type: 'sort', payload: e.target.value })
+              }
+            >
+              {map(Types.CustomSortOptions, (value) => (
+                <option key={value} value={value}>
+                  {startCase(value)}
+                </option>
+              ))}
+            </select>
+          </div>
+        </div>
       </div>
-      <select
-        value={state.filterOption}
-        onChange={(e) => dispatch({ type: 'filter', payload: e.target.value })}
-      >
-        <option value="">Select</option>
-        {map(get(filterOptions, '[0].options'), (option) => (
-          <option key={option} value={option}>
-            {option}
-          </option>
-        ))}
-      </select>
-      <select
-        value={state.sortOption}
-        onChange={(e) => dispatch({ type: 'sort', payload: e.target.value })}
-      >
-        {map(Types.CustomSortOptions, (value) => (
-          <option key={value} value={value}>
-            {startCase(value)}
-          </option>
-        ))}
-      </select>
       <LoadingContainer isLoading={state.status === Types.SearchStates.ACTIVE}>
         {children(state.resultGroups)}
       </LoadingContainer>
