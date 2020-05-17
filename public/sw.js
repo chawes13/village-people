@@ -19,7 +19,7 @@ function validResponse (response) {
 }
 
 function staticAssetRequest (request) {
-  return request.url.includes('/static/')
+  return request.url.includes('/static/') || request.url.startsWith('https://fonts.googleapis.com')
 }
 
 self.addEventListener('install', (event) => {
