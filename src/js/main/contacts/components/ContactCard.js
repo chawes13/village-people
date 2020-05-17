@@ -19,14 +19,16 @@ function ContactCard({ details, name, phoneNumber }) {
   return (
     <Expandable headerTitle={name}>
       <div className="contact actions">
-        <a href={'tel:' + phoneNumber}>
+        <a className="primary-action" href={'tel:' + phoneNumber}>
           <div>{phoneNumber}</div>
+          <div className="contact details">
+            <p>{details}</p>
+          </div>
         </a>
-        <a href={'sms:' + phoneNumber}>
+        <a className="secondary-action" href={'sms:' + phoneNumber}>
           <img src={message} alt="Send Text" />
         </a>
       </div>
-      <div className="contact details">{details}</div>
     </Expandable>
   )
 }

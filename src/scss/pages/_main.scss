@@ -107,7 +107,7 @@ Contacts
   @include rem(margin, 20px -20px 0px);
 
   select{
-    max-width: 200px;
+    max-width: 300px;
     @include rem(margin, 0px 20px);
 
     &:last-child{
@@ -124,7 +124,8 @@ Contacts
   h3{
     background-color: #7a8f9f;
     color: $white-base;
-    @include rem(padding, 5px 20px);
+    @include rem(padding, 5px 10px);
+    font-weight: $bold;
   }
 
   .contact{
@@ -141,6 +142,21 @@ Contacts
     img{
       width: 25px;
     }
+
+    .primary-action {
+      flex-grow: 1;
+    }
+
+    .secondary-action {
+      @include rem(padding, 10px 20px)
+    }
+
+    &.details {
+      p {
+        text-decoration: none;
+        display: inline-block;
+      }
+    }
   }
 }
 
@@ -152,6 +168,7 @@ Contacts
     @include button;
     text-align: left;
     width: 100%;
+    background-color: #e7ecf1;
   }
 }
 
