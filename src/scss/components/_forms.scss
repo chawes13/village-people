@@ -36,6 +36,7 @@ textarea{
   border-radius: 2px;
   box-sizing: border-box;
   appearance: none;
+  -webkit-appearance: none;
   transition: all 0.3s ease-in-out;
   @include font-type($primary-sans-serif, normal, 400);
   @include s-base;
@@ -44,7 +45,7 @@ textarea{
   -webkit-font-smoothing: antialiased;
 
   &::placeholder{
-    color: $white-dark;
+    // color: $white-dark;
     font-style: italic;
   }
 

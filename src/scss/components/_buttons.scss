@@ -3,10 +3,10 @@
 
 // Main Button
 @mixin button{
-  border-radius: 20em;
+  border-radius: 0px;
   display: inline-block;
   @include font-type($primary-sans-serif, normal, $bold);
-  @include rem(padding, 10px);
+  @include rem(padding, 10px 20px);
   @include s-base;
   transition: all .5s ease-in-out;
   min-width: 170px;

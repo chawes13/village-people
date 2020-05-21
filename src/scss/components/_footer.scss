@@ -2,5 +2,7 @@
 Footer
 -----------------------*/
 footer {
-  margin-top: 5em;
+	@include rem(padding, 20px);
+	@include s-small;
+	text-align: center;
 }

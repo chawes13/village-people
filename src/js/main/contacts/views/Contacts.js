@@ -67,9 +67,9 @@ function Contacts() {
           if (isEmpty(resultGroups))
             return <EmptyState message="No contacts found" />
           return (
-            <>
+            <div className="contact-block-container">
               {map(resultGroups, (results, groupName) => (
-                <div key={groupName}>
+                <div key={groupName} className="contact-blocks">
                   <h3>{groupName}</h3>
                   <ul>
                     {results.map((contact) => (
@@ -90,7 +90,7 @@ function Contacts() {
                   </ul>
                 </div>
               ))}
-            </>
+            </div>
           )
         }}
       </FacetedSearch>
