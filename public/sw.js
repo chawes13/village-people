@@ -4,7 +4,7 @@ const STATIC_REQUESTS_TO_CACHE = [
   'env',
   'manifest.json',
   'favicon.png',
-  'lpl-192.png',
+  'logo-192.png',
 ]
 const DATA_CACHE_NAME = 'village-people-data-cache-v1'
 
