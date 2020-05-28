@@ -22,5 +22,5 @@ export const SearchStates = {
 
 export const CustomSortOptions = {
   NAME: 'name',
-  HOUSE: 'house',
+  HOME: 'home',
 }

@@ -56,11 +56,12 @@ function reducer(state, action) {
     }
     case 'initialize-searchable': {
       const grouped = groupContacts(action.payload, state.sortOption)
+      const sorted = sortContactGroups(grouped, state.sortOption)
       return {
         ...state,
         searchableContactGroups: grouped,
         resultGroups: performFacetedSearch({
-          contactGroups: grouped,
+          contactGroups: sorted,
           query: state.searchQuery,
           filter: state.filterOption,
         }),

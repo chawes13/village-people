@@ -3,7 +3,6 @@ Empty State
 -----------------------*/
 
 .empty-state{
-	background-color: $grey-light;
 	@include center;
 	@include rem(padding, 30px);
 	max-width: 600px;

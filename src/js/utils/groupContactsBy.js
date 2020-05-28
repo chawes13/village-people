@@ -1,8 +1,14 @@
-import { isArray, groupBy, flatMap } from 'lodash'
+import { isArray, groupBy, flatMap, mapKeys } from 'lodash'
+import { DEFAULT_GROUP_NAME } from 'config'
 
 function groupContactsBy(collection, option) {
   const contactsArray = getContacts(collection)
-  return groupBy(contactsArray, option)
+  const groupedContacts = groupBy(contactsArray, option)
+
+  return mapKeys(groupedContacts, (value, key) => {
+    if (!key) return DEFAULT_GROUP_NAME
+    return key
+  })
 }
 
 // ----- PRIVATE -----

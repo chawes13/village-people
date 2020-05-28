@@ -3,3 +3,5 @@
 export function isProduction() {
   return process.env.NODE_ENV === 'production'
 }
+
+export const DEFAULT_GROUP_NAME = 'None'

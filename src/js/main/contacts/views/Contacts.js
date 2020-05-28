@@ -1,10 +1,10 @@
-import React, { useEffect, useState, useMemo } from 'react'
+import React, { useEffect, useState } from 'react'
 import * as Types from 'types'
 import { api } from 'api'
 import { Spinner } from '@launchpadlab/lp-components'
 import { EmptyState } from 'components'
 import { ContactCard, FacetedSearch } from '../components'
-import { isEmpty, map, sortBy } from 'lodash'
+import { isEmpty, map, compact } from 'lodash'
 import { getDataFromCache } from 'utils'
 
 const propTypes = {}
@@ -17,6 +17,10 @@ function fetchContacts() {
 
 function fetchFilterOptions() {
   return api.get('/contacts/filter-options')
+}
+
+function getContactDetails(contact) {
+  return compact([contact.home, contact.shift]).join(' - ')
 }
 
 function Contacts() {
@@ -48,10 +52,6 @@ function Contacts() {
     fetchFilterOptions().then(setFilterOptions)
   }, [])
 
-  const sortedContacts = useMemo(() => {
-    return sortBy(contacts, 'lastName')
-  }, [contacts])
-
   if (state === Types.LoadingStates.LOADING) return <Spinner />
   if (state === Types.LoadingStates.FAILURE)
     return <EmptyState className="error" message="Oops! Something went wrong" />
@@ -60,7 +60,7 @@ function Contacts() {
     <div>
       <FacetedSearch
         label="search"
-        initialResults={sortedContacts}
+        initialResults={contacts}
         filterOptions={filterOptions}
       >
         {(resultGroups) => {
@@ -72,21 +72,18 @@ function Contacts() {
                 <div key={groupName} className="contact-blocks">
                   <h3>{groupName}</h3>
                   <ul>
-                    {results.map((contact) => (
-                      <li
-                        key={
-                          contact.firstName +
-                          contact.lastName +
-                          contact.phoneNumber
-                        }
-                      >
-                        <ContactCard
-                          name={`${contact.firstName} ${contact.lastName}`}
-                          phoneNumber={contact.phoneNumber}
-                          details={`${contact.house} - ${contact.shift}`}
-                        />
-                      </li>
-                    ))}
+                    {results.map(
+                      (contact) =>
+                        contact.phoneNumber && (
+                          <li key={contact.name + contact.phoneNumber}>
+                            <ContactCard
+                              name={contact.name}
+                              phoneNumber={contact.phoneNumber}
+                              details={getContactDetails(contact)}
+                            />
+                          </li>
+                        )
+                    )}
                   </ul>
                 </div>
               ))}
