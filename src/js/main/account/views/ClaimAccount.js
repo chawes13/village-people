@@ -1,10 +1,6 @@
 import React, { useState, useEffect } from 'react'
 // import PropTypes from 'prop-types'
 import * as Types from 'types'
-// import { onMount, waitFor } from 'lp-hoc'
-// import { selectors } from '../reducer'
-// import * as actions from '../actions'
-// import * as apiActions from 'api-actions'
 import { Spinner } from '@launchpadlab/lp-components'
 import { useQuery } from 'utils'
 import { useHistory } from 'react-router-dom'
@@ -32,7 +28,7 @@ function ClaimAccount() {
       .then(() => history.push('/contacts'))
       .catch(() => {
         setError(
-          'Authentication failed. Please request a new url from your administrator'
+          'Authentication failed. Please reach out to your administrator'
         )
         setState(Types.LoadingStates.FAILURE)
       })

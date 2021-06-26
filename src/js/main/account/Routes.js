@@ -14,6 +14,7 @@ function Routes({ match: { path } }) {
   return (
     <Layout>
       <Switch>
+        <Route path={path} component={Views.Account} exact={true} />
         <Route path={path + '/claim-account'} component={Views.ClaimAccount} />
       </Switch>
     </Layout>

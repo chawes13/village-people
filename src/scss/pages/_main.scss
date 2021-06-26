@@ -95,7 +95,7 @@ Search
     background-repeat: no-repeat;
     background-size: 15px;
     @include rem(padding-left, 30px);
-    
+
   }
 }
 
@@ -181,5 +181,22 @@ Contacts
 
   .expandable-section-details{
     @include rem(padding, 0px 20px);
+  }
+}
+
+/*-----------------------
+Claim Account
+-----------------------*/
+.claim-account {
+  @include center;
+  @include rem(padding, 30px);
+  max-width: 600px;
+  text-align: center;
+
+  .input-container {
+    width: 60%;
+    display: block;
+    margin: 0 auto 1em auto;
+    text-align: left;
   }
 }
