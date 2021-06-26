@@ -2,6 +2,7 @@ import React, { useMemo } from 'react'
 import { Link } from 'react-router-dom'
 import * as LS from 'local-storage'
 import logo from 'images/logo.svg'
+import { isIos, isStandalone } from 'utils'
 
 const propTypes = {}
 
@@ -26,11 +27,18 @@ function About() {
           </>
         )}
         {!isAuthenticated && (
-          <p>
-            This is an application that provides management with a shared
-            address book for the staff in the Village. If you would like access,
-            please send a request to your administrator.
-          </p>
+          <>
+            <p>
+              This is an application that provides management with a shared
+              address book for the staff in the Village. If you would like
+              access, please send a request to your administrator.
+            </p>
+            {isStandalone() && isIos() && (
+              <Link to="/account" className="button-primary">
+                Claim Account
+              </Link>
+            )}
+          </>
         )}
       </div>
     </div>

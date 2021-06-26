@@ -1,4 +1,4 @@
-const STATIC_CACHE_NAME = 'village-people-static-cache-v1'
+const STATIC_CACHE_NAME = 'village-people-static-cache-v2'
 const STATIC_REQUESTS_TO_CACHE = [
   'index.html',
   'env',
